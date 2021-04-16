@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+        <p:panel header="CRUD de Contatos">
+            <h:form id="form1">
+                <p:panelGrid columns="5">
+                    <h:outputText value="Nome" />
+                    <p:inputText value="#{mb.contato.nome}" required="true" />
+                    <h:outputText value="Email" />
+                    <p:inputText value="#{mb.contato.email}" required="true" /><br></br>
+                    <h:outputText value="Telefone" />
+                    <p:inputText value="#{mb.contato.telefone}" required="true" />
+                    <p:commandButton value="Gravar" action="#{mb.gravar}" update=":form1,:form2" ajax="true">
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:message for="form1" />
+                <p:growl></p:growl>
+            </h:form>
+        </p:panel>
+        <p:panel header="Consultar Contato">
+            <h:form id="form2">
+                <p:dataTable value="#{mb.contatos}" var="linha" paginator="true" rows="4">
+                    <p:column headerText="id">
+                        <h:outputText value="#{linha.id}" />
+                    </p:column>
+                    <p:column headerText="nome">
+                        <h:outputText value="#{linha.nome}" />
+                    </p:column>
+                    <p:column headerText="email">
+                        <h:outputText value="#{linha.email}" />
+                    </p:column>
+                    <p:column headerText="telefone">
+                        <h:outputText value="#{linha.telefone}" />
+                    </p:column>
+                    <p:column headerText="Operacao" style="text-align:center;">
+                        <p:commandButton value="Excluir" action="#{mb.excluir}" ajax="true" update=":form1,:form2">
+                            <f:setPropertyActionListener value="#{linha}"
+                                                         target="#{mb.contato}"></f:setPropertyActionListener>
+                        </p:commandButton>
+                        <p:commandButton value="Alterar" onclick="PF('dlg2').show();" update=":form3" ajax="true">
+                            <f:setPropertyActionListener value="#{linha}"
+                                                         target="#{mb.contato}"></f:setPropertyActionListener>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:message for="form2" />
+                <p:growl></p:growl>
+            </h:form>
+            <p:dialog header="Alterar Contato" widgetVar="dlg2" modal="true"
+                      hideEffect="fade" height="200">
+                <h:form id="form3">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Nome" />
+                        <p:inputText value="#{mb.contato.nome}" required="true" />
+                        <h:outputText value="Email" />
+                        <p:inputText value="#{mb.contato.email}" required="true" />
+                        <h:outputText value="Telefone" />
+                        <p:inputText value="#{mb.contato.telefone}" required="true" />
+                        <p:inputText value="#{mb.contato.id}" type="hidden" />
+                        <p:commandButton value="Alterar Dados" action="#{mb.alterar}"
+                                         update=":form1,:form2" ajax="true" onclick="PF('dlg2').hide();">
+                        </p:commandButton>
+                    </p:panelGrid>
+                    <p:growl></p:growl>
+                </h:form>
+            </p:dialog>
+        </p:panel>
+    </h:body>
+</html>
